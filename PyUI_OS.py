@@ -3,6 +3,8 @@ import modules.Calculator as calculator
 import modules.NetBrowser as netbrowser
 import modules.Notebook as notebook
 import modules.Settings as settings
+from datetime import datetime
+import time
 from PIL import Image, ImageTk
 
 class MainApplication:
@@ -13,6 +15,7 @@ class MainApplication:
         self.root.height = 600
         self.root.geometry(f"{self.root.width}x{self.root.height}")
         self.root.resizable(False, False)
+        self.root.theme = tk.StringVar(value="Dark-Blue")
         
         # Create a Frame for the taskbar
         self.taskbar = tk.CTkFrame(self.root)
@@ -23,8 +26,16 @@ class MainApplication:
         # self.open_calculator_button.pack(side="left")
 
         # Create start menu button on the taskbar
-        self.start_menu = tk.CTkButton(self.taskbar, text="Start", command=self.open_start_menu, width=85, corner_radius=0)
-        self.start_menu.pack(side="left")
+        self.start_menu = tk.CTkButton(self.taskbar, text="Start", command=self.open_start_menu, width=85, height=37, corner_radius=0)
+        self.start_menu.pack(side="left")# Create start menu button on the taskbar
+           
+        
+        
+        # Create Clock label
+        self.clock = tk.CTkLabel(self.taskbar, text="", width=85, corner_radius=0)
+        self.clock.pack(side="right")
+
+        self.update_clock()
 
         # Keep track of open windows on taskbar
         self.open_windows = {}
@@ -74,10 +85,16 @@ class MainApplication:
     def open_start_menu(self):
         print("start menu")
 
+    def update_clock(self):
+        system_time = datetime.now().strftime("%H:%M:%S %p\n%a %d/%m/%Y ") # set the clock time and date format and value
+        self.clock.configure(text = system_time) # Update the clock
+        self.root.after(1000, self.update_clock) # Schedule the update_clock method to be called again after 1000ms (every second)
+
 
 if __name__ == "__main__":
-    tk.set_appearance_mode("dark")
-    tk.set_default_color_theme("dark-blue")
+    
     root = tk.CTk()
     app = MainApplication(root)
+    tk.set_appearance_mode("dark")
+    tk.set_default_color_theme("dark-blue")
     root.mainloop()
