@@ -4,8 +4,10 @@ import modules.NetBrowser as netbrowser
 import modules.Notebook as notebook
 import modules.Settings as settings
 from datetime import datetime
-import time
 from PIL import Image, ImageTk
+from PyQt5.QtWidgets import QApplication
+from modules.NetBrowser import NetBrowserWin
+import threading
 
 class MainApplication:
     def __init__(self, root):
@@ -72,12 +74,14 @@ class MainApplication:
         notebook_window = tk.CTkToplevel(root)
         notebook.NotebookWin(notebook_window, root)
 
-    # Create a Window/Instance of the net browser app
     def open_net_browser_window(self):
-        net_browser_window = tk.CTkToplevel(root)
-        netbrowser.NetBrowserWin(net_browser_window, root)
-        
-    # Create a Window/Instance of the settings app
+        def start_qt_app():
+            self.app = QApplication([])
+            self.window = NetBrowserWin()
+            self.window.open_browser()
+            self.app.exec_()
+        threading.Thread(target=start_qt_app).start()
+
     def open_settings_window(self):
         settings_window = tk.CTkToplevel(root)
         settings.SettingsWin(settings_window, root)
@@ -89,7 +93,6 @@ class MainApplication:
         system_time = datetime.now().strftime("%H:%M:%S %p\n%a %d/%m/%Y ") # set the clock time and date format and value
         self.clock.configure(text = system_time) # Update the clock
         self.root.after(1000, self.update_clock) # Schedule the update_clock method to be called again after 1000ms (every second)
-
 
 if __name__ == "__main__":
     
