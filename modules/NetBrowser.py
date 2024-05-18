@@ -19,17 +19,25 @@ class NetBrowserWin():
 
         self.go_button = QPushButton("Go")
         self.go_button.setMinimumHeight(35)
+        self.go_button.setMaximumWidth(75)
         
         self.back_button = QPushButton("<")
         self.back_button.setMinimumHeight(35)
+        self.back_button.setMaximumWidth(75)
         
         self.forward_button = QPushButton(">")
         self.forward_button.setMinimumHeight(35)
+        self.forward_button.setMaximumWidth(75)
+
+        self.home_button = QPushButton("HOME")
+        self.home_button.setMinimumHeight(35)
+        self.home_button.setMaximumWidth(75)
 
         self.horizontal.addWidget(self.url_bar)
         self.horizontal.addWidget(self.go_button)
         self.horizontal.addWidget(self.back_button)
         self.horizontal.addWidget(self.forward_button)
+        self.horizontal.addWidget(self.home_button)
 
         self.browser = QWebEngineView()
 
@@ -37,6 +45,7 @@ class NetBrowserWin():
         self.url_bar.returnPressed.connect(lambda: self.navigate(self.url_bar.text()))
         self.back_button.clicked.connect(self.browser.back)
         self.forward_button.clicked.connect(self.browser.forward)
+        self.home_button.clicked.connect(lambda: self.navigate("http://google.com"))
 
 
         self.layout.addLayout(self.horizontal)

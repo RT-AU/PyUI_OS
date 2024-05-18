@@ -6,7 +6,6 @@ import modules.Settings as settings
 from datetime import datetime
 from PIL import Image, ImageTk
 from PyQt5.QtWidgets import QApplication
-from modules.NetBrowser import NetBrowserWin
 import threading
 
 class MainApplication:
@@ -23,29 +22,21 @@ class MainApplication:
         self.taskbar = tk.CTkFrame(self.root)
         self.taskbar.pack(side="bottom", fill="x")
 
-        # # Add buttons to the taskbar
-        # self.open_calculator_button = tk.CTkButton(self.taskbar, text="Open Calculator", command=self.open_calculator)
-        # self.open_calculator_button.pack(side="left")
 
-        # Create start menu button on the taskbar
-        self.start_menu = tk.CTkButton(self.taskbar, text="Start", command=self.open_start_menu, width=85, height=37, corner_radius=0)
-        self.start_menu.pack(side="left")# Create start menu button on the taskbar
+        # Create shutdown button on the taskbar
+        self.start_menu = tk.CTkButton(self.taskbar, text="Shutdown", command=self.shutdown, width=50, height=30, corner_radius=10, fg_color="#5b0600", text_color="#C0C0C0")
+        self.start_menu.pack(side="left", padx = 3)
            
         
-        
-        # Create Clock label
+        # Create Clock label on taskbar
         self.clock = tk.CTkLabel(self.taskbar, text="", width=85, corner_radius=0)
         self.clock.pack(side="right")
 
-        self.update_clock()
-
-        # Keep track of open windows on taskbar
-        self.open_windows = {}
+        self.update_clock() # begin clock updating time
 
         # Add a placeholder widget to push the buttons down
         placeholder = tk.CTkLabel(self.root, text="", height=0)
         placeholder.pack()
-
 
         # Define Button Images
         calculator_image = ImageTk.PhotoImage(Image.open("res/icon.png").resize((100,100)))
@@ -63,7 +54,6 @@ class MainApplication:
         self.open_settings_button = tk.CTkButton(self.root, text="Settings", command=self.open_settings_window, width=85, height=50, corner_radius=0)
         self.open_settings_button.pack(anchor="nw", padx = 10, pady = 10)
 
-        
     # Create a Window/Instance of the calculator app
     def open_calculator_window(self):
         calculator_window = tk.CTkToplevel(root)
@@ -74,10 +64,11 @@ class MainApplication:
         notebook_window = tk.CTkToplevel(root)
         notebook.NotebookWin(notebook_window, root)
 
+    # Create an instance of the PyQt5 web browser window on a seperate thread, as both tkinter and PyQt5 run their own loops
     def open_net_browser_window(self):
         def start_qt_app():
             self.app = QApplication([])
-            self.window = NetBrowserWin()
+            self.window = netbrowser.NetBrowserWin()
             self.window.open_browser()
             self.app.exec_()
         threading.Thread(target=start_qt_app).start()
@@ -86,8 +77,8 @@ class MainApplication:
         settings_window = tk.CTkToplevel(root)
         settings.SettingsWin(settings_window, root)
 
-    def open_start_menu(self):
-        print("start menu")
+    def shutdown(self):
+        self.root.quit()
 
     def update_clock(self):
         system_time = datetime.now().strftime("%H:%M:%S %p\n%a %d/%m/%Y ") # set the clock time and date format and value
