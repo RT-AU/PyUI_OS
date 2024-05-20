@@ -8,6 +8,9 @@ from PIL import Image, ImageTk
 from PyQt5.QtWidgets import QApplication
 import threading
 
+tk.set_appearance_mode("dark")
+tk.set_default_color_theme("dark-blue")
+
 class MainApplication:
     def __init__(self, root):
         self.root = root
@@ -39,20 +42,23 @@ class MainApplication:
         placeholder.pack()
 
         # Define Button Images
-        calculator_image = ImageTk.PhotoImage(Image.open("res/icon.png").resize((100,100)))
+        calculator_image = ImageTk.PhotoImage(Image.open("res/Calculator_128x128.png").resize((50,50)))
+        notebook_image = ImageTk.PhotoImage(Image.open("res/Notebook_128x128.png").resize((50,50)))
+        netbrowser_image = ImageTk.PhotoImage(Image.open("res/Net_128x128.png").resize((50,50)))
+        settings_image = ImageTk.PhotoImage(Image.open("res/Settings_128x128.png").resize((50,50)))
 
         # Add buttons to open child windows    
-        self.open_calculator_button = tk.CTkButton(self.root, text="Calculator", command=self.open_calculator_window, width=85, height=50, corner_radius=0, image=calculator_image, compound="top")
-        self.open_calculator_button.pack(anchor="nw", padx = 10, pady = 10)
+        self.open_calculator_button = tk.CTkButton(self.root, text="Calculator", command=self.open_calculator_window, width=150, height=50, corner_radius=20, image=calculator_image, compound="left", anchor="w")
+        self.open_calculator_button.pack(anchor="w", padx = 10, pady = 10)
 
-        self.open_text_editor_button = tk.CTkButton(self.root, text="Notebook", command=self.open_notebook_window, width=85, height=50, corner_radius=0)
-        self.open_text_editor_button.pack(anchor="nw", padx = 10, pady = 10)
+        self.open_text_editor_button = tk.CTkButton(self.root, text="Notebook", command=self.open_notebook_window, width=150, height=50, corner_radius=20, image=notebook_image, compound="left", anchor="w")
+        self.open_text_editor_button.pack(anchor="w", padx = 10, pady = 10)
 
-        self.open_net_browser_button = tk.CTkButton(self.root, text="Net Browser", command=self.open_net_browser_window, width=85, height=50, corner_radius=0)
-        self.open_net_browser_button.pack(anchor="nw", padx = 10, pady = 10)
+        self.open_net_browser_button = tk.CTkButton(self.root, text="Net Browser", command=self.open_net_browser_window, width=150, height=50, corner_radius=20, image=netbrowser_image, compound="left", anchor="w")
+        self.open_net_browser_button.pack(anchor="w", padx = 10, pady = 10)
 
-        self.open_settings_button = tk.CTkButton(self.root, text="Settings", command=self.open_settings_window, width=85, height=50, corner_radius=0)
-        self.open_settings_button.pack(anchor="nw", padx = 10, pady = 10)
+        self.open_settings_button = tk.CTkButton(self.root, text="Settings", command=self.open_settings_window, width=150, height=50, corner_radius=20, image=settings_image, compound="left", anchor="w")
+        self.open_settings_button.pack(anchor="w", padx = 10, pady = 10)
 
     # Create a Window/Instance of the calculator app
     def open_calculator_window(self):
@@ -89,6 +95,5 @@ if __name__ == "__main__":
     
     root = tk.CTk()
     app = MainApplication(root)
-    tk.set_appearance_mode("dark")
-    tk.set_default_color_theme("dark-blue")
+
     root.mainloop()

@@ -34,6 +34,3 @@ class SettingsWin(application.ApplicationWin):
     def change_appearance(self, event):
         tk.set_appearance_mode(self.selected_appearance.get())
     
-
-    def settings(self):
-        print("settings code goes here")
